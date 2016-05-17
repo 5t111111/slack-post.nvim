@@ -34,19 +34,19 @@ class SlackPost(object):
 
     def __execute_posting(self):
         token = self.__get_vim_global_var_safely('slack_api_token')
-        if not token:
+        if token is None:
             return False
 
         channel = self.__get_vim_global_var_safely('slack_channel_to_post')
-        if not channel:
+        if channel is None:
             return False
 
         username = self.__get_vim_global_var_safely('slack_username')
-        if not username:
+        if username is None:
             username = 'Nvim Bot'
 
         icon_emoji = self.__get_vim_global_var_safely('slack_icon_emoji')
-        if not icon_emoji:
+        if icon_emoji is None:
             icon_emoji = ':robot_face:'
 
         self.nvim.command(':let choice = confirm("Are you sure you want to post the selected lines to Slack?", "y Yes\nn No\n")')
@@ -75,6 +75,6 @@ class SlackPost(object):
     
         if not value:
             self.nvim.err_write("g:{var_name!s} is not set\n".format(**locals()))
-            return False
+            return None
 
         return value
